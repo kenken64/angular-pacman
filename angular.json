@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-pacman"
+    }
+  },
+  "defaultProject": "angular-pacman",
+  "cli": {
+    "analytics": false
+  }
 }

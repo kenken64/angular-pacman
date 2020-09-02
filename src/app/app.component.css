@@ -1,0 +1,57 @@
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 560px;
+    height: 560px;
+    border: solid black;
+}
+
+.grid div {
+    width: 20px;
+    height: 20px;
+}
+
+.pac-dot {
+    background-color: green;
+    border: 2px solid white;
+    box-sizing: border-box;
+}
+
+.wall {
+    background-color: red;
+}
+
+.power-pellet {
+    background-color: green;
+    border-radius: 10px;
+}
+
+.blinky {
+    background-color: darkred;
+    box-sizing: border-box;
+}
+
+.pinky {
+    background-color:purple;
+    box-sizing: border-box;
+}
+
+.inky {
+    background-color: cyan;
+    box-sizing: border-box;
+}
+
+.clyde {
+    background-color: orange; 
+    box-sizing: border-box;    
+}
+
+
+.pac-man {
+    background-color: yellow;
+    border-radius: 10px;
+}
+  
+.scared-ghost {
+    background-color: aquamarine;
+}
