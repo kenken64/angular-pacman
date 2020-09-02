@@ -4,10 +4,16 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "serve:docs": "compodoc -p ./tsconfig.json --theme Laravel -w -s --includes .",
     "build": "ng build",
     "test": "ng test",
+    "test:docs": "compodoc -d ./public -p ./tsconfig.json --theme Laravel --coverageTest --coverageTestThresholdFail false  --includes .",
+    "build:ci": "ng build --prod --sourceMap=false --base-href /angular-pacman/",
+    "build:docs": "compodoc -d ./public -p ./tsconfig.json --theme Laravel  --includes .",
+    "test:ci": "ng test --watch=false --code-coverage --source-map true",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e --dev-server-target",
+    "e2e:ci": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -27,9 +33,10 @@
     "@angular-devkit/build-angular": "~0.1000.8",
     "@angular/cli": "~10.0.8",
     "@angular/compiler-cli": "~10.0.14",
-    "@types/node": "^12.11.1",
+    "@compodoc/compodoc": "^1.1.11",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
