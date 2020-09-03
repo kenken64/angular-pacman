@@ -37,6 +37,13 @@ export class AppComponent implements OnInit{
   width: number = 28;
   scoreValue = 0;
   
+  // layout
+  // legend
+    // 0 - pac dot
+    // 1 wall
+    // 2 - ghost lair
+    // 3 - power pellet
+    // 4 - empty
   layout = [
       1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
       1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
