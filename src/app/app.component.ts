@@ -144,6 +144,10 @@ export class AppComponent implements OnInit{
 
   }
 
+
+  /**
+   * Generate the 28x28 grid board
+   */
   createBoard(){
     for (let i = 0; i < this.layout.length; i++){
         const square = this.renderer.createElement('div');
@@ -166,6 +170,8 @@ export class AppComponent implements OnInit{
     
   }
 
+  // init all the ghosts from the array
+  // randonmy set interval to move the ghost around.
   initGhosts(){
     this.ghosts.forEach(ghost =>{
       this.squares[ghost.currentIndex].classList.add('ghost');
@@ -175,10 +181,50 @@ export class AppComponent implements OnInit{
 
   }
 
+  /**
+   * 
+   * @param ghost Randomly move the ghost
+   */
   moveGhost(ghost) {
     // please implement this.
+    var widthX = this.width;
+    var squaresY = this.squares;
+    var scoreValX = this.scoreValue;
+    var pacmanCurrentIndexX = this.pacmanCurrentIndex;
+    var checkForGameOverX = this.checkForGameOver;
+    ghost.timerId = setInterval(function() {
+      const directions = [-1 , +1, +widthX, -widthX];
+      let direction = directions[Math.floor(Math.random() * directions.length)];
+      console.log(direction);
+      if (!squaresY[ghost.currentIndex + direction].classList.contains('ghost') &&
+             !squaresY[ghost.currentIndex + direction].classList.contains('wall')
+      ) {
+        squaresY[ghost.currentIndex].classList.remove(ghost.className);
+        squaresY[ghost.currentIndex].classList.remove('ghost', 'scared-ghost');
+        ghost.currentIndex += direction
+        ghost.previousIndex = ghost.currentIndex;
+        squaresY[ghost.currentIndex].classList.add(ghost.className, 'ghost');
+      }else {
+        direction = directions[Math.floor(Math.random() * directions.length)];
+      }
+      if (ghost.isScared) {
+        squaresY[ghost.currentIndex].classList.add('scared-ghost')
+      }
+
+      if(ghost.isScared && squaresY[ghost.currentIndex].classList.contains('pac-man')) {
+        squaresY[ghost.currentIndex].classList.remove(ghost.className, 'ghost', 'scared-ghost')
+          ghost.currentIndex = ghost.startIndex
+          scoreValX +=100
+          squaresY[ghost.currentIndex].classList.add(ghost.className, 'ghost')
+      }
+      checkForGameOverX(squaresY, pacmanCurrentIndexX);
+    }, ghost.speed);
   }
 
+  /**
+   * Check whether the game is over. if the pacman touches the ghost when it is not isScared
+   * then end the game by removing the keyUp event from the window/document.
+   */
   checkForGameOver(squaresX, pacmanCurrentIndexX) {
       if (squaresX[pacmanCurrentIndexX].classList.contains('ghost') &&
           !squaresX[pacmanCurrentIndexX].classList.contains('scared-ghost')
@@ -190,6 +236,11 @@ export class AppComponent implements OnInit{
 
   }
 
+
+  /**
+   * Check whether has pacman consume all the pellet from the grid
+   * if yes then display the winning message
+   */
   checkforWin() {
     if(this.scoreValue === 274) {
         this.ghosts.forEach(ghost => clearInterval(ghost.timerId))
@@ -198,6 +249,11 @@ export class AppComponent implements OnInit{
     }
   }
 
+  /**
+   * Initialize the board by generating 28x28 grid
+   * Render the initial start position of the pacman
+   * Also render the all the ghosts within the array list
+   */
   ngAfterViewInit() {
     // create the pac man board
     this.createBoard();
@@ -205,6 +261,11 @@ export class AppComponent implements OnInit{
     this.initGhosts();
   }
 
+  /**
+   * What happens when pacman isbusy eating the small pellet
+   * Increment the score
+   * Remove the small pellet from the grid once is consume by pacman
+   */
   pacDotEaten() {
       if( this.squares[this.pacmanCurrentIndex].classList.contains('pac-dot')) {
           this.scoreValue++
@@ -213,11 +274,23 @@ export class AppComponent implements OnInit{
       }
   }
 
+  /**
+   * Once pacman consume the power pellet it gain super power
+   * All the ghost will be afraid of em.
+   * By right the ghost should run away from pacman as much as possible
+   * Set an timeout for the ghost to turn back to hunting mode rather than 
+   * scare of pacman.
+   */
   powerPelletEaten() {
       if( this.squares[this.pacmanCurrentIndex].classList.contains('power-pellet')) {
           this.scoreValue+=10
           this.score.nativeElement.innerHTML = this.scoreValue;
-          this.ghosts.forEach(ghost => ghost.isScared = true)
+          this.ghosts.forEach(ghost => {
+            ghost.isScared = true;
+            console.log("turn to scared of pacman");
+            // turn the ghost colour to aquamarine.
+            this.squares[ghost.currentIndex].classList.add(ghost.className, 'ghost', 'scared-ghost');
+          });
           setTimeout(()=>{
             this.ghosts.forEach(ghost => {
                 ghost.isScared = false
