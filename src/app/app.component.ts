@@ -77,6 +77,7 @@ export class AppComponent implements OnInit{
 
   squares = [];
   pacmanCurrentIndex = 490;
+  // define all the 4 ghosts
   ghosts = [
     new Ghost('blinky', 348, 300),
     new Ghost('pinky', 376, 400),
@@ -88,6 +89,9 @@ export class AppComponent implements OnInit{
   @ViewChild('score') score: ElementRef;
   @ViewChild('result') result: ElementRef;
   
+  /**
+   * Actively listen to the keyup event in order to move the pacman 
+   */
   @HostListener('document:keyup', ['$event'])
   KeyUpEvent(event: KeyboardEvent) {
     this.renderer.removeClass(this.squares[this.pacmanCurrentIndex], 'pac-man');
@@ -147,6 +151,7 @@ export class AppComponent implements OnInit{
 
   /**
    * Generate the 28x28 grid board
+   * Colour all the element with the array define on the layout
    */
   createBoard(){
     for (let i = 0; i < this.layout.length; i++){
@@ -182,8 +187,10 @@ export class AppComponent implements OnInit{
   }
 
   /**
-   * 
-   * @param ghost Randomly move the ghost
+   * Randomly move the ghost
+   * Check whether those ghost are afraid of the pacman
+   * Anti collision
+   * @param ghost 
    */
   moveGhost(ghost) {
     // please implement this.
@@ -262,7 +269,7 @@ export class AppComponent implements OnInit{
   }
 
   /**
-   * What happens when pacman isbusy eating the small pellet
+   * What happens when pacman is busy eating the small pellet
    * Increment the score
    * Remove the small pellet from the grid once is consume by pacman
    */
